@@ -14,7 +14,7 @@ class RapiXMLConan(ConanFile):
     author = "Bincrafters <bincrafters@gmail.com>"
     license = ("BSL-1.0", "MIT")
     exports = ["LICENSE.md"]
-    exports_sources = ["CMakeLists.txt"]
+    exports_sources = ["CMakeLists.txt", "name_lookup_changes_fix.patch"]
     source_subfolder = "source_subfolder"
     no_copy_source = True
 
@@ -22,6 +22,7 @@ class RapiXMLConan(ConanFile):
         source_url = "https://cfhcable.dl.sourceforge.net/project/rapidxml/rapidxml/rapidxml%20"
         tools.get("{0}{1}/{2}-{3}.zip".format(source_url, self.version, self.name, self.version))
         os.rename(self.name + "-" + self.version, self.source_subfolder)
+        tools.patch(base_path=self.source_subfolder, patch_file="name_lookup_changes_fix.patch")
 
     def package(self):
         self.copy(pattern="license.txt", dst="licenses", src=self.source_subfolder)
